@@ -1,0 +1,22 @@
+name: Redis Setup
+agent:
+  machine:
+    type: e1-standard-2
+
+blocks:
+  - name: Install Redis
+    task:
+      jobs:
+        - name: Install Redis
+          commands:
+            - sudo apt update
+            - sudo apt install -y redis-server
+
+  - name: Configure Redis
+    task:
+      jobs:
+        - name: Copy Redis Configuration
+          commands:
+            - sudo cp /etc/redis/redis.conf /etc/redis/redis.conf.backup # Backup original configuration file
+            - sudo cp redis.conf /etc/redis/redis.conf # Copy custom configuration file
+            - sudo systemctl restart redis-server
